@@ -1,0 +1,38 @@
+version: '3.5'
+services:
+  node-exporter:
+    image: prom/node-exporter
+    command:
+      - --path.procfs=/host/proc
+      - --path.sysfs=/host/sys
+      - --collector.filesystem.ignored-mount-points
+      - "^/(sys|proc|dev|host|etc|rootfs/var/lib/docker/containers|rootfs/var/lib/docker/overlay2|rootfs/run/docker/netns|rootfs/var/lib/docker/aufs)($$|/)"
+    volumes:
+      - /proc:/host/proc:ro
+      - /sys:/host/sys:ro
+      - /:/rootfs:ro
+    networks:
+      - traefik
+    restart: unless-stopped
+  cadvisor:
+    image: google/cadvisor
+    volumes:
+      - /:/rootfs:ro
+      - /var/run:/var/run:rw
+      - /sys:/sys:ro
+      - /var/lib/docker/:/var/lib/docker:ro
+    networks:
+      - traefik
+    restart: unless-stopped
+  blackbox-exporter:
+    image: prom/blackbox-exporter
+    command: --config.file=/config/blackbox.yml
+    volumes:
+      - ./blackbox:/config
+    networks:
+      - traefik
+    restart: unless-stopped
+networks:
+  traefik:
+    name: ${TRAEFIK_NETWORK}
+    external: true
