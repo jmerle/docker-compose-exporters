@@ -12,6 +12,6 @@ A Docker Compose configuration to run various [Prometheus](https://prometheus.io
 ## Exporters
 
 The Docker Compose configuration includes the following exporters:
-- [Node Exporter](https://github.com/prometheus/node_exporter)
-- [cAdvisor](https://github.com/google/cadvisor)
-- [Blackbox Exporter](https://github.com/prometheus/blackbox_exporter)
+- [Node Exporter](https://github.com/prometheus/node_exporter) on port 9100
+- [cAdvisor](https://github.com/google/cadvisor) on port 8080
+- [Blackbox Exporter](https://github.com/prometheus/blackbox_exporter) on port 9115
